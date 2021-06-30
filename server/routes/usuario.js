@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const Usuarios = require("../models/usuarios");
 const app = express();
 
@@ -7,9 +8,16 @@ app.get("/usuario", (req, res) => {
 });
 
 app.post("/usuario", (req, res) => {
-  let body = req.body;
+  let { nombre, email, password, role, estado, google } = req.body;
 
-  let usuario = new Usuarios(body);
+  let usuario = new Usuarios({
+    nombre,
+    email,
+    password: bcrypt.hashSync(password, 10),
+    role,
+    estado,
+    google,
+  });
 
   usuario.save((err, usuarioDB) => {
     if (err) {

@@ -27,7 +27,6 @@ const usuarioSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      required: true,
       default: "USER_ROLE",
       enum: rolesValidos,
     },
