@@ -3,8 +3,25 @@ const bcrypt = require("bcrypt");
 const Usuarios = require("../models/usuarios");
 const app = express();
 
-app.get("/usuario", (req, res) => {
-  res.json("get Usuario");
+app.get("/usuario",(req, res) => {
+  Usuarios.find((err, usuarioDB) => {
+    
+    if (err) {
+      res.status(400).json({
+        ok: false,
+        err,
+      });
+    } else {
+      res.status(201).json({
+        ok: true,
+        usuario: usuarioDB,
+      });
+    }
+
+  });
+  
+ 
+
 });
 
 app.post("/usuario", (req, res) => {
@@ -32,19 +49,51 @@ app.post("/usuario", (req, res) => {
       });
     }
 
-    //
+    
   });
 
-  //
+  
 });
 
 app.put("/usuario/:id", (req, res) => {
   let id = req.params.id;
-  res.json({ id });
+  let body = req.body;
+  
+  Usuarios.findByIdAndUpdate(id, body, {new: true}, (err, usuarioDB) => {
+     if (err) {
+       res.status(400).json({
+         ok: false,
+         err,
+       });
+     } else {
+       res.status(201).json({
+         ok: true,
+         usuario: usuarioDB,
+       });
+     }
+  });
+
 });
 
-app.delete("/usuario", (req, res) => {
-  res.json("delete Usuario");
+app.delete("/usuario/:id", (req, res) => {
+
+  let id = req.params.id;
+  
+
+  Usuarios.findByIdAndUpdate(id, {estado: false}, { new: true }, (err, usuarioDB) => {
+    if (err) {
+      res.status(400).json({
+        ok: false,
+        err,
+      });
+    } else {
+      res.status(201).json({
+        ok: true,
+        usuario: usuarioDB,
+      });
+    }
+  });
+
 });
 
 module.exports = app;
