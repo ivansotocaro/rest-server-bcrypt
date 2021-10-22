@@ -3,6 +3,7 @@ require("./config/config");
 const express = require("express");
 const mongoose = require("mongoose");
 
+const index = require("./routes/index");
 //Inicializamos express
 const app = express();
 
@@ -11,14 +12,14 @@ app.use(express.urlencoded({ extended: false }));
 //Parsear los datos que se envian de tipo Json
 app.use(express.json());
 
-app.use(require("./routes/usuario"));
+app.use(index);
 
 // CONEXION MONGODB
 mongoose.connect(DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
+  // useFindAndModify: false,
+  // useCreateIndex: true,
 });
 
 const db = mongoose.connection;
